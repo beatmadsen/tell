@@ -21,7 +21,7 @@
     
   It would be interesting to see if some of these ideas can be put together in a language.
   
-1. There should probably be a third reason too. I can't think of something specific right now, but maybe something about learning stuff.
+1. I want to see if I can instill some of the best software engineering practices I have learned and developed in my career thus far into a language that encourages high quality, clean code.
 
 ### What does the name mean?
 
