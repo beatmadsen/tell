@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-01-16:3
+**Document version:** 2017-01-16:4
 
 **Language API version:** 0.1.0
 
@@ -65,7 +65,7 @@ Some features are redundant because there are better means to express the same i
 
 #### Features that let you write smelly code
 
-When writing code in Tell, generally speaking, the path of least resistance you lead the programmer to write clean code. Certain features tend to lead to code that is difficult to test or maintain, and we want to avoid such features if we can do fine without them.
+When writing code in Tell, generally speaking, the path of least resistance should lead the programmer to write clean code. Certain features tend to lead to code that is difficult to test or maintain, and we want to avoid such features if we can do fine without them.
 
 #### Features that belong in systems languages
 
