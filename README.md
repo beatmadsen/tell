@@ -57,19 +57,19 @@ Because Tell is so opinionated in its feature set there are many problems that a
 
 ### Throw away bad features
 
-abc
+Tell aims to be a slim and opinionated language much like many recent languages such as for instance Go. To keep the language slim and clean, many 'bad' features found in similar languages were discarded because they matched one or more of the following characterisations:
 
 #### Features you don't need
 
-abc
+Some features are redundant because there are better means to express the same intent. Some do not have any real use case in a high level programming model.
 
-#### Features that let you write smelly code
+#### Features that let you write smelly code
 
-abc
+When writing code in Tell, generally speaking, the path of least resistance you lead the programmer to write clean code. Certain features tend to lead to code that is difficult to test or maintain, and we want to avoid such features if we can do fine without them.
 
 #### Features that belong in systems languages
 
-abc
+As described above, Tell is a high level applications language, and the inclusion of low level or systems oriented features would water down the intentionality and focus of the rest of the language. 
 
 ## Features
 
