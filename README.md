@@ -31,15 +31,29 @@ As a secondary inspiration, the Scala based actor library Akka uses the method '
 
 ## Philosophy
 
-Eventhough the motivations for this language are more feature driven than philosophical, there are still some core principles and purposes that the language must follow in order to be pleasant to work with and in order to stay focused on and true to the ideas behind the original feature set as the language evolves over time.
+Tell is a rather opinionated language. Even though the motivations for the language are more feature driven than philosophical, there are still some core principles and purposes that the language must follow in order to be pleasant to work with and further to stay focused on and true to the ideas behind the original feature set as the language evolves over time.
 
 ### Be nice
 
-This principle is a page taken straight out of Ruby and its creator Matz's book. Tell should be a language that enables you to solve problems easily and enjoyably. In fact, joy of use is more important than ease, although the two are probably related. There's no plenty of room for features that makes the programmin experience fun and productive. There's no room for features that cause agony and frustration. The aim is to err on the side of happiness.
+This principle is a page taken straight out of Ruby and its creator Matz's book. Tell should be a language that enables you to solve problems easily and enjoyably. In fact, joy of use is more important than ease, although the two are probably related. There's plenty of room for features that makes the programming experience fun and productive. There's no room for features that cause agony and frustration. The aim is to err on the side of happiness.
 
 ### Application Programming
 
-abc
+The focus of Tell is programming applications. Features that are more systems oriented such as control over memory, control over concurrency and low level datatypes are excluded. 
+
+It is my belief that you cannot make a language that offers both good high level and good low level programming models, because the programmer will always be facing the temptation to use the wrong abstractions in the wrong places, which leads to all kinds of code deficiencies. In order to prevent this you would need a whole network of complicated rules which would lead to an unpleasant and unintuitive programming experience. So, in order to be nice, you might say, we try to do one thing and do it well.
+
+Another consequence of an opinionated focus on application programming is that Tell does not provide any metaprogramming or introspection syntax. The general idea is that if you can't express your automation by means of the abstractions you have built, then you need to build better abstractions. There are no secret pathways to get you your values or references. This is a significant difference to Ruby from which Tell draws a lot of inspiration. It is my belief this leads to a cleaner and more predictable language.
+
+### Easy to integrate
+
+Because Tell is so opinionated in its feature set there are many problems that are better solved in other languages. Therefore it is important that Tell can play well with others. This can be achieved through
+
+* Good interfacing with native code, e.g. FFI or similar.
+
+* Good I/O abstractions in the core library
+
+* Batteries included approach in core library: Offer built-in HTTP client and server, JSON-parser, etc. 
 
 ### Throw away bad features
 
