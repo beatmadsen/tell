@@ -87,9 +87,31 @@ abc
 
 abc
 
+### Object References
+
+abc
+
 ### Classes
 
-Classes are actors
+Classes, like in OOP terminology, are definitions of 'boxes' that hold data and methods that operate on that data. Objects are specific instances of classes with some given state.
+
+#### Classes are actors
+
+abc
+
+#### Methods
+
+Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be values, structs or object references.
+
+An objects gains ownership over a struct when it is passed as a parameter to a method on that object. Until the object passes along the struct to another object's method, that object has exlusive access (read and write) to the struct. Therefore it is ok to mutate struct parameters.
+
+Unlike other languages, because classes are actors, method invocations on an instance of a class are atomic, i.e. only one method can be executed at a time on an instance.
+
+Tell only has instance methods, it does not have class or static methods.
+
+#### Only instance state
+
+abc
 
 ### No modules
 
