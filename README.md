@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-01-16:4
+**Document version:** 2017-01-18:1
 
 **Language API version:** 0.1.0
 
