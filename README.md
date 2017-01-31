@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-01-18:1
+**Document version:** 2017-01-31:2
 
 **Language API version:** 0.1.0
 
@@ -128,7 +128,7 @@ class Car
 end
 ```
 
-An objects gains ownership over a struct when it is passed as a parameter to a method on that object. Until the object passes along the struct to another object's method, that object has exlusive access (read and write) to the struct. Therefore it is ok to mutate struct parameters.
+An object gains ownership over a struct when the struct is passed as a parameter to a method on the object. Until the object passes along the struct to another object's method, that object has exlusive access (read and write) to the struct. Therefore it is ok to mutate struct parameters.
 
 Unlike other languages, because classes are actors, method invocations on an instance of a class are atomic, i.e. only one method can be executed at a time on an instance.
 
