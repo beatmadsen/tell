@@ -87,9 +87,7 @@ abc
 
 abc
 
-### Object References
-
-abc
+### Closures
 
 ### Classes
 
@@ -101,7 +99,34 @@ abc
 
 #### Methods
 
-Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be values, structs or object references.
+Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be values, structs or closures. Other objects cannot be passed as parameters.
+
+Methods can have either public or private visibility. Public methods are defined using the keyword `pm`, whereas private methods are defined with the keyword `m`.
+
+The reason why other objects cannot be passed as parameters (or as fields in a struct parameter) is that we do not want to break encapsulation. No actions in another object should be able to cause any side effects on this object's state without going through an explicit method call, and no other object should need to have any knowledge about this object's internal state. We do, however need a way to provide callbacks to methods on this object as it is calling methods on other objects, e.g. a request-response kind of pattern like when you send a message back to the `sender` actor in Akka. 
+
+For this purpose we have closures, which are valid parameters, that can close over the current object and be sent as a parameter in another object. A closure has access to invoking both public and private methods on the object in which it was created. All change of an object's state must happen through method calls, so we cannot change an object's instance variables directly from a closure. Instead we can provide private methods that can be used by the closure during a callback. Let's take an example to clarify this.
+
+```
+class Car
+
+  pm init()
+    @engine = Engine.new()
+    @started = false
+  end
+  
+  pm start()
+    # We pass a closure to @engine's start() method.
+    # The closure has access to the car instance's private methods
+    @engine.start { |success| mark_started() if success }   
+  end
+  
+  m mark_started()
+    @started = true
+  end
+  
+end
+```
 
 An objects gains ownership over a struct when it is passed as a parameter to a method on that object. Until the object passes along the struct to another object's method, that object has exlusive access (read and write) to the struct. Therefore it is ok to mutate struct parameters.
 
