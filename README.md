@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-01-31:2
+**Document version:** 2017-02-06:1
 
 **Language API version:** 0.1.0
 
@@ -89,13 +89,15 @@ abc
 
 ### Closures
 
+abc
+
 ### Classes
 
 Classes, like in OOP terminology, are definitions of 'boxes' that hold data and methods that operate on that data. Objects are specific instances of classes with some given state.
 
 #### Classes are actors
 
-abc
+When Dr. Alan Kay originally coined the term 'Object Oriented Programming' the inpiration was [a biological cell](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en) that could only communicate via messages.
 
 #### Methods
 
