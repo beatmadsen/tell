@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-02-06:1
+**Document version:** 2017-02-06:2
 
 **Language API version:** 0.1.0
 
@@ -13,14 +13,14 @@
 
 1. Because I've built a list over the past couple of years of
 
-    * language features that I like, 
-    
-    * language features I dislike, and 
-    
-    * library features that I wish would be available at a language level. 
-    
+    * language features that I like,
+
+    * language features I dislike, and
+
+    * library features that I wish would be available at a language level.
+
   It would be interesting to see if some of these ideas can be put together in a language.
-  
+
 1. I want to see if I can instill some of the best software engineering practices I have learned and developed in my career thus far into a language that encourages high quality, clean code.
 
 ### What does the name mean?
@@ -39,7 +39,7 @@ This principle is a page taken straight out of Ruby and its creator Matz's book.
 
 ### Application Programming
 
-The focus of Tell is programming applications. Features that are more systems oriented such as control over memory, control over concurrency and low level datatypes are excluded. 
+The focus of Tell is programming applications. Features that are more systems oriented such as control over memory, control over concurrency and low level datatypes are excluded.
 
 It is my belief that you cannot make a language that offers both good high level and good low level programming models, because the programmer will always be facing the temptation to use the wrong abstractions in the wrong places, which leads to all kinds of code deficiencies. In order to prevent this you would need a whole network of complicated rules which would lead to an unpleasant and unintuitive programming experience. So, in order to be nice, you might say, we try to do one thing and do it well.
 
@@ -53,7 +53,7 @@ Because Tell is so opinionated in its feature set there are many problems that a
 
 * Good I/O abstractions in the core library
 
-* Batteries included approach in core library: Offer built-in HTTP client and server, JSON-parser, etc. 
+* Batteries included approach in core library: Offer built-in HTTP client and server, JSON-parser, etc.
 
 ### Throw away bad features
 
@@ -69,7 +69,7 @@ When writing code in Tell, generally speaking, the path of least resistance shou
 
 #### Features that belong in systems languages
 
-As described above, Tell is a high level applications language, and the inclusion of low level or systems oriented features would water down the intentionality and focus of the rest of the language. 
+As described above, Tell is a high level applications language, and the inclusion of low level or systems oriented features would water down the intentionality and focus of the rest of the language.
 
 ## Features
 
@@ -97,7 +97,13 @@ Classes, like in OOP terminology, are definitions of 'boxes' that hold data and 
 
 #### Classes are actors
 
-When Dr. Alan Kay originally coined the term 'Object Oriented Programming' the inpiration was [a biological cell](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en) that could only communicate via messages.
+When Dr. Alan Kay originally coined the term 'Object Oriented Programming' the inspiration was [a biological cell](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en) that could only communicate via messages. Early object oriented languages like Smalltalk stayed largely true to this idea. Over time other ideas and language constructs such as inheritance and polymorphism have found their way into the common understanding of the term.
+
+The message passing concurrency pattern known as the 'Actor Model' might be said to be equally well fitted to the analogy of the biological cell, and indeed [draws some of its inspiration](https://en.wikipedia.org/wiki/History_of_the_Actor_model#Smalltalk) from early object languages. The actor model has recently gained popularity through the Scala library Akka.
+
+Classes in Tell are actors. Instances of classes, i.e. objects, can send and receive messages by means of method invocation. Invocation of methods is asynchronous and atomic; Multiple simultaneous method invocations will be dispatched sequentially with no guarantees about ordering. Even if the implementing runtime supports concurrency, the object can safely side-effect on its internal state without worrying about memory consistency issues, but there's no protection against logical race conditions where one invocation blindly assumes that another invocation has already happened. For these kinds of back-and-forth interactions callback closure parameters are useful.
+
+TODO: object graph leads to some ordering guarantees.
 
 #### Methods
 
@@ -105,7 +111,7 @@ Classes have methods. Calling methods on objects are the equivalent of invoking 
 
 Methods can have either public or private visibility. Public methods are defined using the keyword `pm`, whereas private methods are defined with the keyword `m`.
 
-The reason why other objects cannot be passed as parameters (or as fields in a struct parameter) is that we do not want to break encapsulation. No actions in another object should be able to cause any side effects on this object's state without going through an explicit method call, and no other object should need to have any knowledge about this object's internal state. We do, however need a way to provide callbacks to methods on this object as it is calling methods on other objects, e.g. a request-response kind of pattern like when you send a message back to the `sender` actor in Akka. 
+The reason why other objects cannot be passed as parameters (or as fields in a struct parameter) is that we do not want to break encapsulation. No actions in another object should be able to cause any side effects on this object's state without going through an explicit method call, and no other object should need to have any knowledge about this object's internal state. We do, however need a way to provide callbacks to methods on this object as it is calling methods on other objects, e.g. a request-response kind of pattern like when you send a message back to the `sender` actor in Akka.
 
 For this purpose we have closures, which are valid parameters, that can close over the current object and be sent as a parameter in another object. A closure has access to invoking both public and private methods on the object in which it was created. All change of an object's state must happen through method calls, so we cannot change an object's instance variables directly from a closure. Instead we can provide private methods that can be used by the closure during a callback. Let's take an example to clarify this.
 
@@ -116,17 +122,17 @@ class Car
     @engine = Engine.new()
     @started = false
   end
-  
+
   pm start()
     # We pass a closure to @engine's start() method.
     # The closure has access to the car instance's private methods
     @engine.start { |success| mark_started() if success }   
   end
-  
+
   m mark_started()
     @started = true
   end
-  
+
 end
 ```
 
