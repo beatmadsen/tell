@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-02-06:2
+**Document version:** 2017-02-07:1
 
 **Language API version:** 0.1.0
 
@@ -73,13 +73,17 @@ As described above, Tell is a high level applications language, and the inclusio
 
 ## Features
 
-abc
+TODO: something about doing what go is doing by chosing its own feature set rather than slowly becoming every other programming language.
 
 ### Duck typing
 
-abc
+The concept of duck typing is well known from dynamic languages like Python and Ruby. The idea is that instead of relying on some pre-defined set of allowed operations given by a nominal type, we defer to the particular object to decide whether it allows the operation. If we try to call a method on an object, we succeed if the method is defined, and otherwise the object may choose what to do, typically throwing an error.
 
-### Values
+It is [sometimes](https://existentialtype.wordpress.com/2011/03/19/dynamic-languages-are-static-languages/) argued that dynamic typing is equivalent to having only one static type, a 'unitype' language, because classes are used for classification rather than typing as defined by enforcing an invariant declaration of allowed values of a variable.
+
+Tell is duck typed. Following the line of reasoning above, it has exactly two types. The first type is SyncDuck which is made up of stucts, primitives and closures. The second type is AsyncDuck which is made up of classes. The need to have two separate types instead of just one 'Duck' is that there are some significant limitations on the operations available to AsyncDuck values, which we will get back to later.
+
+### Primitives
 
 abc
 
@@ -107,7 +111,7 @@ TODO: object graph leads to some ordering guarantees.
 
 #### Methods
 
-Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be values, structs or closures. Other objects cannot be passed as parameters.
+Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be primitives, structs or closures. Other objects cannot be passed as parameters.
 
 Methods can have either public or private visibility. Public methods are defined using the keyword `pm`, whereas private methods are defined with the keyword `m`.
 
