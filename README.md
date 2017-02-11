@@ -111,7 +111,7 @@ TODO: object graph leads to some ordering guarantees.
 
 #### Methods
 
-Classes have methods. Calling methods on objects are the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be primitives, structs or closures. Other objects cannot be passed as parameters.
+Classes have methods. Calling methods on objects is the equivalent of invoking actor actions. They can modify instance state or trigger methods on other objects. Methods can be defined to take zero, one, two or three parameters. Parameters can be primitives, structs or closures. Only SyncDucks can be passed as parameters, and therefore other objects cannot be passed as parameters.
 
 Methods can have either public or private visibility. Public methods are defined using the keyword `pm`, whereas private methods are defined with the keyword `m`.
 
@@ -158,9 +158,66 @@ abc
 
 abc
 
-### Monkey patches
+### Monkey patching
 
-abc
+The ability to extend or alter the behavior of code constructs at a point after their original definitions is often referred to as 'monkey patching'. It is normally advised that one uses such functionality with caution. For one thing it makes it more difficult to navigate the code when looking for where cetain behaviour comes from. Secondly, often when changing behaviour, the change has a global scope so it can, depending on the nature of the change, have effects across the entire code base.
+
+If we isolate the two types of patching, extending and altering, and hold them up against the Open-Closed Principle whereby components should be open for extension and closed for change, it's clear that from a best-practices point of view only the extension functionality is desireable.
+
+Extension based monkey patching (in combination with duck typing) has the benefit of giving us the closest thing to the functional concept of type classes that object oriented programming can offer (Scala has a different approach, but it's rather involved). In Haskell, for instance, you can name that a data type belongs to the `Show` type class and therefore you must provide a `show` function that works on that data type. This usage of type classes is easy to accomplish in OO - you just need to implement the show method on your object. But there's another, more powerful use case for type classes - you can define your own type classes, and implement them for any data type, even third party or built-in types.
+
+In Tell in normal cases we don't want to allow the programmer to alter existing functionality as it would violate the Open-Closed Principle. Extension patching is available using the keywords `patch` and works on both classes and structs:
+
+```
+patch SomeClass
+  pm smart_draw(size)
+    height = @height + size.height
+    @renderer.draw(height, size.width)
+  end
+end
+
+patch SomeStruct
+  pm adjust(length)
+    # implicit return in last line for struct methods
+    @length_offset + length
+  end  
+end
+```
+
+When we are testing code we would like to isolate the functionality we are testing by means of controlling the boundaries of the code. The standard approach in many languages is dependency injection. However, when testing classes in Tell this is not possible, since we cannot pass object dependencies as parameters. Objects are responsible for setting up their internal state graph with the help of SyncDuck inputs to the constructor or mutating methods and encapsulating it from outer interactions. Instead we must rely on monkey patching and altering methods to inject test-specific behaviour. We want to limit altering of functionality to when we are testing only, so Tell provides the keyword combination `test patch` which will only be executed if the run-time is instrumented to run tests. As an example:
+
+```
+class Greeter
+  pm init
+    @receiver = Receiver.new
+  end
+
+  pm say_hello()
+    @receiver.say('hello')
+  end
+end
+
+
+# class only available when test instrumentation
+# is turned on in runtime
+test class MockReceiver
+  pm say(text)
+    assert(text == 'hello')
+  end
+end
+
+
+# patch only available when test instrumentation
+# is turned on in runtime
+test patch Greeter
+  # with test patch we can override methods and constructors
+  pm init
+    @receiver = MockReceiver.new
+  end
+end
+```
+
+In this example we overide the construtor to allow us to use a different value for the `@receiver` instance variable.
 
 ## Syntax
 
