@@ -1,5 +1,5 @@
 # The Tell programming language
-**Document version:** 2017-02-07:1
+**Document version:** 2017-02-13:1
 
 **Language API version:** 0.1.0
 
@@ -156,7 +156,47 @@ abc
 
 ### No inheritance
 
-abc
+A well known OO best practice is to 'prefer composition over inheritance'. Tell makes this decesion very easy - inheritance is not a part of the language. Of course, reuse is still highly encouraged, but this will have to be achieved through composition of components. It is the assumption that we don't often need to expose functionality from our components in the aggregate's interface, which would be the equivalent of inheriting methods from a superclass without overriding them. In case we do need it, though, the delegation pattern can be implemented relatively concisely. An example:
+
+```
+class Tank
+  pm init
+    @turret = Turret.new
+    @chasis = Chasis.new
+  end
+
+  pm fire_gun(target)
+    @turret.fire_gun(target)
+  end
+
+  pm move(direction)
+    @chasis.move(direction)
+  end
+end
+```
+
+The equivalent of a multi-level class hierarchy is multi-level composition, remembering that objects's methods don't return values:
+
+```
+class Person
+  pm talk(callback)
+    words = "I am a person"
+    puts(callback.call(words))
+  end
+end
+
+class Graduate
+  pm talk(callback)
+    @person.talk { |words| callback.call(words + " and I went to University") }
+  end
+end
+
+class Doctor
+  pm talk(callback)
+    @graduate.talk { |words| callback.call(words + " and I'm a doctor") }
+  end
+end
+```
 
 ### Monkey patching
 
